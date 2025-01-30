@@ -14,21 +14,29 @@ import { useParams } from "react-router-dom";
             
                 if(!response.ok){
                     const errorData=await response.json();
-                    throw new Error (errorData.message || 'Failed to fetch book')
+                    throw new Error (errorData.message || 'Failed to fetch book');
                 }
                 const data = await response.json();
                 setBooks(data);
             } catch (err){
-                setError(err.message)
+                setError(err.message);
             }
             finally{
                 setLoading(false);
             }
+        };
+        fetchBook();
+    },[id]);
+        if(loading){
+            return <div>Loading book details...</div>
         }
-    })
-
- 
-
+        if (error){
+            return <div>Error:{error}</div>
+        }
+        if(!book){
+            return <div>Book not found.</div>
+        }
+    }
  return(
     <div>
         <h1>{book.name}</h1>
@@ -37,5 +45,6 @@ import { useParams } from "react-router-dom";
         {}
     </div>
  );
-};
+
+
 export default BookDetail;
